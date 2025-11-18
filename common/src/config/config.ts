@@ -1,0 +1,112 @@
+import dotenv from "dotenv";
+import Crypto from "node:crypto";
+import path from "path";
+import { z } from "zod";
+
+const NODE_ENV = process.env.NODE_ENV || "development";
+console.log(NODE_ENV);
+const envFiles = [`.env.${NODE_ENV}.local`, `.env.${NODE_ENV}`, ".env"];
+
+if (NODE_ENV !== "production") {
+  envFiles.forEach((file) => {
+    dotenv.config({ path: path.resolve(process.cwd(), file) });
+  });
+}
+
+const logLevelSchema = z.enum(["debug", "error", "warn", "log", "info"]);
+export type LogLevel = z.infer<typeof logLevelSchema>;
+
+const configSchema = z.object({
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+
+  DB_URL: z.string().default("localhost"),
+  DB_PASSWORD: z.string().default(''),
+
+  SUPABASE_URL: z.string().default(''),
+  SUPABASE_KEY: z.string().default(''),
+
+  RATE_LIMITING_WINDOW: z.coerce.number().positive().default(60),
+  JWT_SECRET: z
+    .string()
+    .min(1)
+    .default(() => {
+      console.log("No JWT secret provided. Generating Random.");
+      return Crypto.randomBytes(32).toString("hex");
+    }),
+  LOGGING: z.coerce.boolean().default(false),
+  LOG_TO_FILE: z.coerce.boolean().default(false),
+  LOG_LEVELS: z
+    .string()
+    .transform((val) => val.split(",").map((s) => s.trim()))
+    .pipe(z.array(logLevelSchema))
+    .default(["debug"]),
+  REDIS_HOST: z.string().default("localhost"),
+  REDIS_PORT: z.coerce.number().positive().default(6379),
+  REDIS_USERNAME: z.string(),
+  REDIS_PASSWORD: z.string(),
+
+  FRONTEND_DOMAIN: z.string().default('localhost'),
+  FRONTEND_PORT: z.number().int().positive().default(3002),
+  WEB_SERVER_DOMAIN: z.string().default('localhost'),
+  WEB_PORT: z.coerce.number().int().positive().default(3000),
+
+  GAME_SERVER_DOMAIN: z.string().default('localhost'),
+  GAME_SERVER_PORT: z.number().int().positive().default(3001),
+  DISCORD_SERVICE_DOMAIN: z.string().default('localhost'),
+  DISCORD_SERVICE_PORT: z.number().int().positive().default(3003),
+
+  FRONTEND_SSL: z.string().default(() => {
+    if (NODE_ENV == 'development') {
+      return 'http';
+    } else {
+      return 'https';
+    }
+  }),
+
+  WEB_SERVER_SSL: z.string().default(() => {
+    if (NODE_ENV == 'development') {
+      return 'http';
+    } else {
+      return 'https';
+    }
+  }),
+
+  GAME_SERVER_SSL: z.string().default(() => {
+    if (NODE_ENV == 'development') {
+      return 'ws';
+    } else {
+      return 'wss';
+    }
+  }),
+  DISCORD_SERVICE_SSL: z.string().default(() => {
+    if (NODE_ENV == 'development') {
+      return 'http';
+    } else {
+      return 'https';
+    }
+  }),
+
+});
+
+export type Config = z.infer<typeof configSchema>;
+
+// Parse and validate
+const parseConfig = (): Config => {
+  try {
+    const config = configSchema.parse(process.env);
+    return config;
+  } catch (error) {
+    if (error) {
+      console.error("Invalid environment variables:");
+      console.error(error);
+    } else {
+      console.error("Unexpected error parsing configuration:", error);
+    }
+    process.exit(1);
+  }
+};
+
+const config = parseConfig();
+export default config;

@@ -1,0 +1,32 @@
+{
+  "name": "common",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx watch src/main.ts",
+    "typeorm": "./node_modules/typeorm/cli.js",
+    "build": "tsc -p tsconfig.json",
+    "preview": "vite preview",
+    "migration_generate": "tsc -p tsconfig.json && NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./dist/config/typeorm.config.js ./src/migrations/migration",
+    "migration:create": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/migrations/migration",
+    "migration:dev:run": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./dist/config/typeorm.config.js",
+    "migration:dev:revert": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./dist/config/typeorm.config.js"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.5",
+    "dotenv": "^17.2.3",
+    "ioredis": "^5.8.2",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.27",
+    "zod": "^4.1.12"
+  }
+}

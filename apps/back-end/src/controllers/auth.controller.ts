@@ -24,15 +24,16 @@ export const createAuthController = createController((deps: Deps) => {
     return res.redirect(303, construct_home_page_link());
   }
 
-  async function discordAuthInit(req: AuthRequest, res: Response) {
+  async function googleAuthInit(req: AuthRequest, res: Response) {
     const webServerURL = web_server_base_link();
     console.log(webServerURL);
     const { data, error } = await req.supabaseInstance.auth.signInWithOAuth({
-      provider: 'discord',
+      provider: 'google',
       options: {
-        redirectTo: webServerURL + '/auth/callback',
+        redirectTo: webServerURL + '/auth/v1/callback',
         queryParams: {
-          scope: "identify guilds.join email"
+          access_type: 'offline',
+          prompt: 'consent'
         }
       }
     });
@@ -41,5 +42,5 @@ export const createAuthController = createController((deps: Deps) => {
       return res.redirect(data.url);
     }
   }
-  return { callback, discordAuthInit };
+  return { callback, googleAuthInit };
 })

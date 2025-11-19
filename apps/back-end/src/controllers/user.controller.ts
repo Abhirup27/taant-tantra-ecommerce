@@ -18,15 +18,18 @@ type Deps = {
 //   return { getUser, getUserById };
 // }
 
-export const createUserController = createController((deps: Deps)=> {
+export const createUserController = createController((deps: Deps) => {
 
+  async function getProfile(req: Request, res: Response) {
+
+  }
   async function getUser(req: Request, res: Response) {
     const users = await deps.userService.getUsers();
     res.json(users);
   }
-    async function getUserById(req: Request, res: Response) {
-      const user = await deps.userService.getUserById("123");
-      res.json(user);
-    }
-  return { getUser, getUserById };
+  async function getUserById(req: Request, res: Response) {
+    const user = await deps.userService.getUserById("123");
+    res.json(user);
+  }
+  return { getUser, getUserById, getProfile };
 })

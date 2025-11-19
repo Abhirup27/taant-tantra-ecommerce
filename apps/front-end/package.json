@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "gen-config": "npx tailwindcss init -p",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "NODE_ENV=production tsc -b && NODE_ENV=production vite build",
+    "_NOTE": "IN MY ENV FILE I DO NOT PASS VITE'S MODE VARIABLE SO I DO NEED TO PASS NODE_ENV",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -65,7 +65,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
-    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",

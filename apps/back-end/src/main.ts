@@ -27,8 +27,8 @@ async function bootstrap() {
   const authRoutes = createAuthRoutes();
   app.use([userRoutes, authRoutes]);
 
-  app.listen(shared.config.WEB_PORT, () => {
-    console.log(`Server running on ${shared.config.WEB_SERVER_DOMAIN} at ${shared.config.WEB_PORT}`);
+  app.listen(shared.config.BACKEND_PORT, () => {
+    console.log(`Server running on ${shared.config.BACKEND_DOMAIN} at ${shared.config.BACKEND_PORT}`);
     shared.AppDataSource.getRepository("User");
   });
 }

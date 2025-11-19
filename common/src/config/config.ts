@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
-import Crypto from "node:crypto";
+let Crypto: typeof import("node:crypto");
+if (typeof process !== "undefined" && process?.versions?.node) {
+  Crypto = await import("node:crypto");
+}
 import path from "path";
 import { z } from "zod";
 
@@ -49,13 +52,8 @@ const configSchema = z.object({
 
   FRONTEND_DOMAIN: z.string().default('localhost'),
   FRONTEND_PORT: z.number().int().positive().default(3002),
-  WEB_SERVER_DOMAIN: z.string().default('localhost'),
-  WEB_PORT: z.coerce.number().int().positive().default(3000),
-
-  GAME_SERVER_DOMAIN: z.string().default('localhost'),
-  GAME_SERVER_PORT: z.number().int().positive().default(3001),
-  DISCORD_SERVICE_DOMAIN: z.string().default('localhost'),
-  DISCORD_SERVICE_PORT: z.number().int().positive().default(3003),
+  BACKEND_DOMAIN: z.string().default('localhost'),
+  BACKEND_PORT: z.coerce.number().int().positive().default(3000),
 
   FRONTEND_SSL: z.string().default(() => {
     if (NODE_ENV == 'development') {
@@ -65,22 +63,7 @@ const configSchema = z.object({
     }
   }),
 
-  WEB_SERVER_SSL: z.string().default(() => {
-    if (NODE_ENV == 'development') {
-      return 'http';
-    } else {
-      return 'https';
-    }
-  }),
-
-  GAME_SERVER_SSL: z.string().default(() => {
-    if (NODE_ENV == 'development') {
-      return 'ws';
-    } else {
-      return 'wss';
-    }
-  }),
-  DISCORD_SERVICE_SSL: z.string().default(() => {
+  BACKEND_SSL: z.string().default(() => {
     if (NODE_ENV == 'development') {
       return 'http';
     } else {
@@ -93,7 +76,7 @@ const configSchema = z.object({
 export type Config = z.infer<typeof configSchema>;
 
 // Parse and validate
-const parseConfig = (): Config => {
+export const parseConfig = (): Config => {
   try {
     const config = configSchema.parse(process.env);
     return config;

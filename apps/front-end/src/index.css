@@ -3,6 +3,10 @@
 
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
+
+/* #container { */
+/*           display: none; */
+/*         } */
 :root {
   --font-size: 16px;
   
@@ -210,3 +214,51 @@
 html {
   font-size: var(--font-size);
 }
+
+#container .css-vh2lqg {
+  width: var(--viewport-width-scaled);
+  min-height: var(--viewport-height-scaled);
+  height: 100%;
+  top: 0;
+}
+
+#container .css-tzn6qh {
+  display: block;
+  position: absolute;
+}
+
+#container .css-6gkcj1 {
+  transform-origin: top left;
+  --max-layout-width: 2048px;
+  --min-layout-width: 320px;
+  --max-font-size: 288px;
+  --min-font-size: 6px;
+  /* FIXED: these cannot use var(--100dvw) */
+  --viewport-width-scaled: calc(100dvw / var(--viewport-scale));
+  --viewport-height-scaled: calc(100dvh / var(--viewport-scale));
+  --content-width-scaled: calc(var(--content-width-unscaled) / var(--viewport-scale));
+  --content-margin-x-scaled: max(
+    calc((var(--viewport-width) - var(--max-layout-width)) / var(--viewport-scale) / 2),
+    0px
+  );
+}
+
+#container .css-myl2ny {
+  position: relative;
+  flex-shrink: 0;
+  flex: 1 0 0;
+  display: block;
+}
+
+#container .css-exq74d {
+  min-width: 1px;
+  min-height: 1px;
+  width: 100%;
+  height: 100dvh;
+}
+
+#container .css-j9f0op {
+  width: 100%;
+  height: 100%;
+}
+

@@ -4,7 +4,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
-
+import { supabase } from "../supabaseClient.ts";
+import { web_server_base_link } from "@/utils.ts";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,6 +26,11 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const handleGoogleAuth = () => {
     // Handle Google authentication
     console.log("Google authentication");
+    window.location.href = web_server_base_link() + '/auth/google';
+
+    // supabase.auth.signInWithOAuth({
+    //   provider: 'google',
+    // })
   };
 
   const handleFacebookAuth = () => {
@@ -40,8 +46,8 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
             {isSignUp ? "Create Account" : "Welcome Back"}
           </DialogTitle>
           <DialogDescription className="text-center">
-            {isSignUp 
-              ? "Sign up to start shopping for beautiful Taant sarees" 
+            {isSignUp
+              ? "Sign up to start shopping for beautiful Taant sarees"
               : "Sign in to your Taant Tantra account"}
           </DialogDescription>
         </DialogHeader>

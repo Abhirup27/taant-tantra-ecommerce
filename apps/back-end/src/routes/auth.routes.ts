@@ -9,7 +9,7 @@ export function createAuthRoutes() {
   const controller = createAuthController({});
   router.use(create_supabase_instance);
 
-  router.get('/auth', controller.discordAuthInit);
-  router.get('/auth/callback', controller.callback);
+  router.get('/auth/google', controller.googleAuthInit);
+  router.get('/auth/v1/callback', controller.callback);
   return router;
 }

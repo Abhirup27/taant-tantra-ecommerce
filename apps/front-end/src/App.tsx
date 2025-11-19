@@ -166,143 +166,148 @@ export default function App() {
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-background transition-colors">
-      <Navbar
-        cartCount={totalCartItems}
-        onCartClick={() => setIsCartOpen(true)}
-        onLoginClick={() => setIsLoginOpen(true)}
-        onSearchActiveChange={setIsSearchActive}
-        onMobileMenuClick={() => setIsMobileSidebarOpen(true)}
-      />
-      <Hero />
-      <FeaturedCarousel />
-      <Testimonials />
+    <div className="tailwind css-myl2ny css-exq74d">
 
-      {/* Trending Sidebar */}
-      <TrendingSidebar
-        products={products}
-        onViewDetails={handleViewDetails}
-      />
 
-      {/* Wrapper for CategoryFilter and Products - constrains sticky behavior */}
-      <div className="relative">
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          isSearchActive={isSearchActive}
+      <div className="min-h-screen bg-background transition-colors">
+        <Navbar
+          cartCount={totalCartItems}
+          onCartClick={() => setIsCartOpen(true)}
+          onLoginClick={() => setIsLoginOpen(true)}
+          onSearchActiveChange={setIsSearchActive}
+          onMobileMenuClick={() => setIsMobileSidebarOpen(true)}
+        />
+        <Hero />
+        <FeaturedCarousel />
+        <Testimonials />
+
+        {/* Trending Sidebar */}
+        <TrendingSidebar
+          products={products}
+          onViewDetails={handleViewDetails}
         />
 
-        {/* Products Grid */}
-        <div id="products-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pl-64 py-12 pb-24 lg:pb-12">
-          <div className="mb-8">
-            <h3 className="text-2xl text-foreground">
-              {selectedCategory === "All" ? "All Sarees" : selectedCategory}
-            </h3>
-            <p className="text-muted-foreground mt-1">
-              {filteredProducts.length} products available
-            </p>
-          </div>
+        {/* Wrapper for CategoryFilter and Products - constrains sticky behavior */}
+        <div className="relative">
+          <CategoryFilter
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            isSearchActive={isSearchActive}
+          />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="relative bg-[#1a1a1a] dark:bg-black text-white mt-20 transition-colors overflow-hidden">
-        {/* Pattern Background */}
-        <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${patternBg})`,
-            backgroundSize: 'auto 150px',
-            backgroundRepeat: 'repeat',
-            backgroundPosition: 'center'
-          }}
-        ></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-right md:text-left">
-              <h4 className="text-xl mb-4">
-                <span style={{ color: '#EB881E' }}>Taant</span>
-                <span style={{ color: '#FFB217' }}>Tantra</span>
-              </h4>
-              <p className="text-gray-400">
-                Bringing you the finest collection of handcrafted Taant sarees from West Bengal.
+          {/* Products Grid */}
+          <div id="products-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pl-64 py-12 pb-24 lg:pb-12">
+            <div className="mb-8">
+              <h3 className="text-2xl text-foreground">
+                {selectedCategory === "All" ? "All Sarees" : selectedCategory}
+              </h3>
+              <p className="text-muted-foreground mt-1">
+                {filteredProducts.length} products available
               </p>
             </div>
-            <div className="text-right md:text-left">
-              <h5 className="mb-4">Shop</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">New Arrivals</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Taant Sarees</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Designer Sarees</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Sale</a></li>
-              </ul>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                  onViewDetails={handleViewDetails}
+                />
+              ))}
             </div>
-            <div className="text-right md:text-left">
-              <h5 className="mb-4">Help</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Shipping Info</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Returns</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">FAQs</a></li>
-              </ul>
-            </div>
-            <div className="text-right md:text-left">
-              <h5 className="mb-4">About</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-primary transition-colors">Our Story</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Artisans</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Sustainability</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Taant Tantra. All rights reserved.</p>
           </div>
         </div>
-      </footer>
 
-      {/* Cart Sheet */}
-      <Cart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-      />
+        {/* Footer */}
+        <footer className="relative bg-[#1a1a1a] dark:bg-black text-white mt-20 transition-colors overflow-hidden">
+          {/* Pattern Background */}
+          <div
+            className="absolute inset-0 opacity-5"
+            style={{
+              backgroundImage: `url(${patternBg})`,
+              backgroundSize: 'auto 150px',
+              backgroundRepeat: 'repeat',
+              backgroundPosition: 'center'
+            }}
+          ></div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div className="text-right md:text-left">
+                <h4 className="text-xl mb-4">
+                  <span style={{ color: '#EB881E' }}>Taant</span>
+                  <span style={{ color: '#FFB217' }}>Tantra</span>
+                </h4>
+                <p className="text-gray-400">
+                  Bringing you the finest collection of handcrafted Taant sarees from West Bengal.
+                </p>
+              </div>
+              <div className="text-right md:text-left">
+                <h5 className="mb-4">Shop</h5>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#" className="hover:text-primary transition-colors">New Arrivals</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Taant Sarees</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Designer Sarees</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Sale</a></li>
+                </ul>
+              </div>
+              <div className="text-right md:text-left">
+                <h5 className="mb-4">Help</h5>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#" className="hover:text-primary transition-colors">Contact Us</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Shipping Info</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Returns</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">FAQs</a></li>
+                </ul>
+              </div>
+              <div className="text-right md:text-left">
+                <h5 className="mb-4">About</h5>
+                <ul className="space-y-2 text-gray-400">
+                  <li><a href="#" className="hover:text-primary transition-colors">Our Story</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Artisans</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Sustainability</a></li>
+                  <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+              <p>&copy; 2025 Taant Tantra. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
 
-      {/* Product Detail Dialog */}
-      <ProductDetail
-        product={selectedProduct}
-        isOpen={isProductDetailOpen}
-        onClose={() => setIsProductDetailOpen(false)}
-        onAddToCart={handleAddToCart}
-      />
+        {/* Cart Sheet */}
+        <Cart
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          items={cartItems}
+          onUpdateQuantity={handleUpdateQuantity}
+          onRemoveItem={handleRemoveItem}
+        />
 
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      />
+        {/* Product Detail Dialog */}
+        <ProductDetail
+          product={selectedProduct}
+          isOpen={isProductDetailOpen}
+          onClose={() => setIsProductDetailOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
 
-      {/* Mobile Sidebar */}
-      <MobileSidebar
-        isOpen={isMobileSidebarOpen}
-        onClose={() => setIsMobileSidebarOpen(false)}
-        onLoginClick={() => setIsLoginOpen(true)}
-      />
+        {/* Login Modal */}
+        <LoginModal
+          isOpen={isLoginOpen}
+          onClose={() => setIsLoginOpen(false)}
+        />
+
+        {/* Mobile Sidebar */}
+        <MobileSidebar
+          isOpen={isMobileSidebarOpen}
+          onClose={() => setIsMobileSidebarOpen(false)}
+          onLoginClick={() => setIsLoginOpen(true)}
+        />
+      </div>
     </div>
+
   );
 }

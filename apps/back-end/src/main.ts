@@ -24,7 +24,7 @@ async function bootstrap() {
   const services = createAppServices(dbConnection);
 
   const userRoutes = createUserRoutes(services.userService);
-  const authRoutes = createAuthRoutes();
+  const authRoutes = createAuthRoutes(services.authService);
   app.use([userRoutes, authRoutes]);
 
   app.listen(shared.config.BACKEND_PORT, () => {

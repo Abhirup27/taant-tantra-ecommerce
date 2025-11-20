@@ -1,7 +1,48 @@
-import { Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Check, PrimaryColumn, OneToOne } from "typeorm";
+import { AuthUser } from "./AuthUser.entity.js";
 
 @Entity()
+@Check(`("email" IS NOT NULL OR "phone_number" IS NOT NULL)`)
 export default class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({
+    type: "bigint",
+    unsigned: true,
+    nullable: false,
+  })
   id!: number;
+
+  @Column({
+    type: "citext",
+    unique: true,
+    nullable: true,
+  })
+  email!: string | null;
+
+  @Column(
+    {
+      type: "varchar",
+      unique: true,
+      nullable: true,
+    }
+  )
+  phone_number!: string | null;
+
+  @Column({
+    type: "varchar",
+    unique: false,
+    nullable: false,
+  })
+  first_name!: string;
+
+
+  @Column({
+    type: "varchar",
+    unique: false,
+    nullable: true,
+  })
+  last_name!: string | false;
+
+  @OneToOne(() => AuthUser, authuser => authuser.id)
+
+
 }

@@ -2,9 +2,14 @@ import { createController } from "../utils/createController";
 import { type Request, type Response } from "express";
 import { construct_home_page_link, web_server_base_link } from "../utils/constructURL.ts";
 import type AuthRequest from "../types/AuthRequest";
-type Deps = {};
+import type { AuthService } from "../services/auth.service.ts";
+type Deps = {
+  authService: AuthService
+};
 
 export const createAuthController = createController((deps: Deps) => {
+
+
   async function callback(req: AuthRequest, res: Response) {
     console.log(req.cookies, req.params
       , req.query);
@@ -18,12 +23,18 @@ export const createAuthController = createController((deps: Deps) => {
 
       const response = await req.supabaseInstance.auth.exchangeCodeForSession(code);
       console.log(JSON.stringify(response));
+      if (response.error) {
+        console.log(JSON.stringify(response.error));
+      }
+      else if (response.data.user.id) {
+        await deps.authService.does_user_exist(response.data.user.id);
+      }
 
+
+      // res.redirect(303, construct_home_page_link());
+      return res.redirect(303, construct_home_page_link());
     }
-    // res.redirect(303, construct_home_page_link());
-    return res.redirect(303, construct_home_page_link());
   }
-
   async function googleAuthInit(req: AuthRequest, res: Response) {
     const webServerURL = web_server_base_link();
     console.log(webServerURL);

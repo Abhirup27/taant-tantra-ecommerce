@@ -15,15 +15,7 @@ const create_supabase_instance = (req: AuthRequest, res: Response, next: NextFun
       getAll() {
         return parseCookieHeader(req.headers.cookie ?? '')
       },
-      async setAll(cookiesToSet) {
-        const serialized = cookiesToSet.map(({ name, value, options }) =>
-          serializeCookieHeader(name, value, options)
-        );
-        await Promise.resolve(serialized).then((serialized) => {
-          res.setHeader("Set-Cookie", serialized);
-
-        })
-      }
+      setAll(cookiesToSet) { cookiesToSet.forEach(({ name, value, options }) => res.appendHeader('Set-Cookie', serializeCookieHeader(name, value, options))) },
     },
   });
 

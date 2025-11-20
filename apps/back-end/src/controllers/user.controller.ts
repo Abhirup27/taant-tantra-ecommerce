@@ -24,8 +24,15 @@ export const createUserController = createController((deps: Deps) => {
 
   }
   async function getUser(req: Request, res: Response) {
-    const users = await deps.userService.getUsers();
-    res.json(users);
+    try {
+
+      const users = await deps.userService.getUsers();
+      res.json(users);
+
+    } catch (error) {
+      res.sendStatus(500);
+    }
+
   }
   async function getUserById(req: Request, res: Response) {
     const user = await deps.userService.getUserById("123");

@@ -2,7 +2,7 @@ import { createController } from "../utils/createController";
 import { type Request, type Response } from "express";
 import { construct_home_page_link, web_server_base_link } from "../utils/constructURL.ts";
 import type AuthRequest from "../types/AuthRequest";
-import type { AuthService } from "../services/auth.service.ts";
+import { SUCCESS, type AuthService } from "../services/auth.service.ts";
 type Deps = {
   authService: AuthService
 };
@@ -22,12 +22,31 @@ export const createAuthController = createController((deps: Deps) => {
     if (code) {// need to  check this in the middleware which would run before the instance is created
 
       const response = await req.supabaseInstance.auth.exchangeCodeForSession(code);
-      console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response.data.user.user_metadata.full_name.split(" ")[1]));
       if (response.error) {
         console.log(JSON.stringify(response.error));
       }
       else if (response.data.user.id) {
-        await deps.authService.does_user_exist(response.data.user.id);
+        const existing: boolean = await deps.authService.does_user_exist(response.data.user.id);
+        if (existing) {
+          //just store info in redis and redirect to front-end
+        } else {
+          // create new user in public.users
+          const newUser = await deps.authService.create_user({
+            id: response.data.user.id,
+            email: response.data.user.email,
+            phone_number: response.data.user.phone,
+            first_name: response.data.user.user_metadata.full_name.split(" ")[0],
+            last_name: response.data.user.user_metadata.full_name.split(" ")[1] ?? undefined,
+          });
+
+          // this may go to a middleware which runs after
+          // switch (newUser) {
+          //   // case SUCCESS:
+          //
+          // }
+        }
+      } else {
       }
 
 

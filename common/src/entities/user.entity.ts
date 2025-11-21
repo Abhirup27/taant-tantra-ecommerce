@@ -1,4 +1,4 @@
-import { Column, Entity, Check, PrimaryColumn, OneToOne } from "typeorm";
+import { Column, Entity, Check, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
 import { AuthUser } from "./AuthUser.entity.js";
 
 @Entity()
@@ -42,7 +42,8 @@ export default class User {
   })
   last_name!: string | false;
 
-  @OneToOne(() => AuthUser, authuser => authuser.id)
-
+  @OneToOne(() => AuthUser)
+  @JoinColumn({ name: "id" })
+  authUser!: AuthUser;
 
 }

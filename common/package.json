@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "migration_generate": "tsc -p tsconfig.json && NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./dist/config/typeorm.config.js ./src/migrations/migration",
     "migration:create": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/migrations/migration",
-    "migration:dev:run": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./dist/config/typeorm.config.js",
+    "migration:dev:run": "tsc -p tsconfig.json && NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./dist/config/typeorm.config.js",
     "migration:dev:revert": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./dist/config/typeorm.config.js"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ import {
   PrimaryColumn,
 } from "typeorm";
 
-@Entity({ name: "users", schema: "auth" })
+@Entity({ name: "users", schema: "auth", synchronize: false })
 export class AuthUser {
   @PrimaryColumn("uuid")
   id!: string;

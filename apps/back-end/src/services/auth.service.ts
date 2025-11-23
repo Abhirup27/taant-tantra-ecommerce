@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import User from "common";
+import { type User } from "common";
 
 
 export interface AuthService {
@@ -25,12 +25,13 @@ export function createAuthService(userRepo: Repository<User>): AuthService {
       email: user.email,
       first_name: user.first_name,
       last_name: user.last_name,
-      phone_number: user.phone_number
+      phone_number: user.phone_number ?? null
     });
 
     try {
 
       const result: User = await userRepo.save(new_user);
+      console.log(result);
     } catch (error) {
       console.error(error);
       return API_ERROR;

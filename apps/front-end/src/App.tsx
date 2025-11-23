@@ -11,6 +11,7 @@ import { LoginModal } from "./components/LoginModal";
 import { TrendingSidebar } from "./components/TrendingSidebar";
 import { MobileSidebar } from "./components/MobileSidebar";
 import patternBg from "./assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
+import './index.css'
 // Mock product data
 const products: Product[] = [
   {

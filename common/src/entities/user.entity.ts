@@ -5,11 +5,10 @@ import { AuthUser } from "./AuthUser.entity.js";
 @Check(`("email" IS NOT NULL OR "phone_number" IS NOT NULL)`)
 export default class User {
   @PrimaryColumn({
-    type: "bigint",
-    unsigned: true,
+    type: "uuid",
     nullable: false,
   })
-  id!: number;
+  id!: string;
 
   @Column({
     type: "citext",
@@ -40,7 +39,14 @@ export default class User {
     unique: false,
     nullable: true,
   })
-  last_name!: string | false;
+  last_name!: string | null;
+
+  @Column({
+    type: "text",
+    unique: true,
+    nullable: true,
+  })
+  pfp_image!: string | null;
 
   @OneToOne(() => AuthUser)
   @JoinColumn({ name: "id" })

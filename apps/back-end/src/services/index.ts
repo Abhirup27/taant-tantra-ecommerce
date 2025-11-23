@@ -2,12 +2,13 @@ import { DataSource } from "typeorm";
 import { createUserService } from "./user.service";
 import { type UserService } from "./user.service";
 import { createAuthService, type AuthService } from "./auth.service";
+import type { User } from "common";
 
 export function createAppServices(dataSource: DataSource): {
   userService: UserService;
   authService: AuthService;
 } {
-  const userRepo = dataSource.getRepository('User');
+  const userRepo = dataSource.getRepository<User>('User');
   // let newUser = userRepo.create({});
   // newUser.id = 13;
   // userRepo.save(newUser);

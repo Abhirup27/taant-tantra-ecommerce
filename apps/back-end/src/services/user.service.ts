@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import User from "common";
+import { type User } from "common";
 
 export interface UserService {
   getUsers: () => Promise<User[]>;

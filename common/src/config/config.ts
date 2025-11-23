@@ -10,11 +10,11 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 console.log(NODE_ENV);
 const envFiles = [`.env.${NODE_ENV}.local`, `.env.${NODE_ENV}`, ".env"];
 
-if (NODE_ENV !== "production") {
-  envFiles.forEach((file) => {
-    dotenv.config({ path: path.resolve(process.cwd(), file) });
-  });
-}
+// if (NODE_ENV !== "production") {
+envFiles.forEach((file) => {
+  dotenv.config({ path: path.resolve(process.cwd(), file) });
+});
+// }
 
 const logLevelSchema = z.enum(["debug", "error", "warn", "log", "info"]);
 export type LogLevel = z.infer<typeof logLevelSchema>;

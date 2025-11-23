@@ -20,10 +20,10 @@ type Deps = {
 
 export const createUserController = createController((deps: Deps) => {
 
-  async function getProfile(req: Request, res: Response) {
+  async function getProfile(_req: Request, _res: Response) {
 
   }
-  async function getUser(req: Request, res: Response) {
+  async function getUser(_req: Request, res: Response) {
     try {
 
       const users = await deps.userService.getUsers();
@@ -34,7 +34,7 @@ export const createUserController = createController((deps: Deps) => {
     }
 
   }
-  async function getUserById(req: Request, res: Response) {
+  async function getUserById(_req: Request, res: Response) {
     const user = await deps.userService.getUserById("123");
     res.json(user);
   }

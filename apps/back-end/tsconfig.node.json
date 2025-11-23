@@ -1,21 +1,32 @@
 {
+  "files": [
+    "./src/types/AuthRequest.d.ts"
+  ],
   "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ES2023",
     "lib": [
       "ES2023"
     ],
     "module": "ESNext",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
     "types": [
+      "express",
       "node"
     ],
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "moduleResolution": "node",
+    // "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
     "moduleDetection": "force",
-    "noEmit": true,
+    // "noEmit": true,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -24,5 +35,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
+  "include": [
+    "src"
+  ]
   // "include": ["vite.config.ts"]
 }

@@ -10,7 +10,7 @@
     "lib": [
       "ES2023"
     ],
-    "module": "ESNext",
+    "module": "node16",
     "typeRoots": [
       "./node_modules/@types",
       "./typings"
@@ -20,13 +20,15 @@
       "node"
     ],
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
     "skipLibCheck": true,
     /* Bundler mode */
-    "moduleResolution": "node",
-    // "allowImportingTsExtensions": true,
+    "moduleResolution": "node16",
+    "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
-    // "noEmit": true,
+    "noEmit": false,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

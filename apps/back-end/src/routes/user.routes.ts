@@ -1,7 +1,7 @@
 import express from "express";
 
-import { createUserController } from "../controllers/user.controller";
-import { type UserService } from "../services/user.service";
+import { createUserController } from "../controllers/user.controller.js";
+import { type UserService } from "../services/user.service.js";
 
 export function createUserRoutes(userService: UserService) {
   const router = express.Router();

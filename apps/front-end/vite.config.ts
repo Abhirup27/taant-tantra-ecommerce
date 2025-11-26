@@ -37,8 +37,8 @@ export default defineConfig(({ mode }) => {
       // }
       // proxy: {
       //   // this path prefix can be anything, like '/discord'
-      //   '/discord': {
-      //     target: 'https://discord.com',
+      //   '/auth/signin': {
+      //     target: 'http://www.localhost:3000',
       //     changeOrigin: true,
       //     secure: true,
       //     rewrite: (path) => path.replace(/^\/discord/, ''),

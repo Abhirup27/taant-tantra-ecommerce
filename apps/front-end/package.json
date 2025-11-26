@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "node server",
-    "run:build": "NODE_ENV=production node server",
+    "run:build:dev": "NODE_ENV=development node server",
+    "run:build:prod": "NODE_ENV=production node server",
+    "build:client:dev": "NODE_ENV=development vite build --outDir dist/client",
+    "build:server:dev": "NODE_ENV=development vite build --outDir dist/server --ssr src/entry-server.js",
     "build:client": "NODE_ENV=production vite build --outDir dist/client",
     "build:server": "NODE_ENV=production vite build --outDir dist/server --ssr src/entry-server.js",
     "_dev": "vite",

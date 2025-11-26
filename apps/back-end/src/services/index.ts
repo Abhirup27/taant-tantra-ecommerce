@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
-import { createUserService } from "./user.service";
-import { type UserService } from "./user.service";
-import { createAuthService, type AuthService } from "./auth.service";
+import { createUserService } from "./user.service.js";
+import { type UserService } from "./user.service.js";
+import { createAuthService, type AuthService } from "./auth.service.js";
 import type { User } from "common";
 
 export function createAppServices(dataSource: DataSource): {

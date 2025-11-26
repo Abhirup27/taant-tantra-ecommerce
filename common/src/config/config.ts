@@ -56,19 +56,21 @@ const configSchema = z.object({
   BACKEND_PORT: z.coerce.number().int().positive().default(3000),
 
   FRONTEND_SSL: z.string().default(() => {
-    if (NODE_ENV == 'development') {
-      return 'http';
-    } else {
-      return 'https';
-    }
+    return 'http';
+    // if (NODE_ENV == 'development') {
+    //   return 'http';
+    // } else {
+    //   return 'https';
+    // }
   }),
 
   BACKEND_SSL: z.string().default(() => {
-    if (NODE_ENV == 'development') {
-      return 'http';
-    } else {
-      return 'https';
-    }
+    return 'http';
+    // if (NODE_ENV == 'development') {
+    //   return 'http';
+    // } else {
+    //   return 'https';
+    // }
   }),
 
 });

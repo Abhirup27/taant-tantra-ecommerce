@@ -1,15 +1,57 @@
-import { createController } from "../utils/createController";
+import { createController } from "../utils/createController.js";
 import { type Response } from "express";
-import { construct_home_page_link, web_server_base_link } from "../utils/constructURL";
-import type AuthRequest from "../types/AuthRequest";
-import { type AuthService } from "../services/auth.service";
+import { construct_home_page_link, web_server_base_link } from "../utils/constructURL.js";
+import type AuthRequest from "../types/AuthRequest.d.ts";
+import { type AuthService } from "../services/auth.service.js";
+import { z } from "zod";
+
 type Deps = {
   authService: AuthService
 };
+export const LoginSchema = z.object({
+  email: z.email(),
+  password: z.string()
+    .min(6, "Password must be at least 6 characters long")
+    .regex(/[a-z]/, "Must contain at least one lowercase letter")
+    .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Must contain at least one digit")
+    .regex(/[^A-Za-z0-9]/, "Must contain at least one symbol")
+})
+
+export type LoginBody = z.infer<typeof LoginSchema>;
 
 export const createAuthController = createController((deps: Deps) => {
 
+  async function emailSignIn(req: AuthRequest, res: Response) {
 
+    const validation = LoginSchema.safeParse(req.body);
+    console.log('here');
+    if (!validation.success) {
+      res.status(400).json({
+        error: "invalid request body",
+        details: z.treeifyError(validation.error)
+      });
+    } else {
+      const data: LoginBody = validation.data;
+
+      // try {
+      //
+      //   const result = await req.supabaseInstance.auth.signInWithPassword({
+      //     email: data.email,
+      //     password: data.password
+      //   });
+      //   console.log(result);
+      // } catch (error) {
+      //   console.log(error);
+      // }
+
+
+      return res.json({
+        data
+      });
+    }
+
+  }
   async function callback(req: AuthRequest, res: Response) {
     // console.log(req.cookies, req.params
     //   , req.query);
@@ -22,6 +64,7 @@ export const createAuthController = createController((deps: Deps) => {
     if (code) {// need to  check this in the middleware which would run before the instance is created
 
       const response = await req.supabaseInstance.auth.exchangeCodeForSession(code);
+      console.log(response);
       if (response.error) {
         console.log(JSON.stringify(response.error));
       }
@@ -57,7 +100,7 @@ export const createAuthController = createController((deps: Deps) => {
   }
   async function googleAuthInit(req: AuthRequest, res: Response) {
     const webServerURL = web_server_base_link();
-    console.log(webServerURL);
+    // console.log(webServerURL);
     const { data, error } = await req.supabaseInstance.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -72,9 +115,9 @@ export const createAuthController = createController((deps: Deps) => {
       console.error(error);
     }
     if (data.url) {
-      await req.supabaseInstance.removeAllChannels();
-      return res.redirect(data.url);
+      // await req.supabaseInstance.removeAllChannels();
+      return await res.redirect(data.url);
     }
   }
-  return { callback, googleAuthInit };
+  return { callback, googleAuthInit, emailSignIn };
 })

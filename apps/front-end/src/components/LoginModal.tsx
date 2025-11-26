@@ -20,7 +20,20 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
     e.preventDefault();
     // Handle login/signup logic here
     console.log("Form submitted:", { email, password, isSignUp });
-    // You would integrate with your authentication service here
+
+    const url = web_server_base_link() + (isSignUp ? '/auth/register' : '/auth/signin');
+    console.log(url);
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, password: password })
+    })
+      .then((response) => response.json()).then((data) => {
+        console.log(data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    // console.log(response);
   };
 
   const handleGoogleAuth = () => {

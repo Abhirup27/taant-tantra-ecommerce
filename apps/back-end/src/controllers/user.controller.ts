@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import { type UserService } from "../services/user.service";
-import { createController } from "../utils/createController";
+import { type UserService } from "../services/user.service.js";
+import { createController } from "../utils/createController.js";
 
 type Deps = {
   userService: UserService;

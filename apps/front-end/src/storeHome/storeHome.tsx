@@ -10,8 +10,8 @@ import { Cart, type CartItem } from "./components/Cart";
 import { LoginModal } from "./components/LoginModal";
 import { TrendingSidebar } from "./components/TrendingSidebar";
 import { MobileSidebar } from "./components/MobileSidebar";
-import patternBg from "./assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
-import './index.css'
+import patternBg from "../assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
+import '../index.css'
 // Mock product data
 const products: Product[] = [
   {
@@ -118,7 +118,7 @@ const products: Product[] = [
 
 const categories = ["All", "Silk", "Cotton", "Designer", "Wedding", "Party Wear", "Casual"];
 
-export default function App() {
+export function Store() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);

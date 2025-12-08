@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge";
 import { TrianglePattern } from "./TrianglePattern";
-import patternBg from "../assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
+import patternBg from "../../assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -35,8 +35,8 @@ export function CategoryFilter({ categories, selectedCategory, onCategoryChange,
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
                 className={`cursor-pointer whitespace-nowrap ${selectedCategory === category
-                    ? "bg-primary hover:opacity-90"
-                    : "hover:bg-primary/10"
+                  ? "bg-primary hover:opacity-90"
+                  : "hover:bg-primary/10"
                   }`}
                 onClick={() => onCategoryChange(category)}
               >

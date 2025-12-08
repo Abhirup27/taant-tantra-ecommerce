@@ -1,8 +1,8 @@
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import patternBg from "../assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
-import heroImageDark from "../assets/hero-dark-theme.png";
-import heroImageLight from "../assets/hero-light-theme.png";
+import patternBg from "../../assets/5db937b2a06f33eee00776240e830064a5f6dfa9.jpg";
+import heroImageDark from "../../assets/hero-dark-theme.png";
+import heroImageLight from "../../assets/hero-light-theme.png";
 
 export function Hero() {
   const [theme, setTheme] = useState<"light" | "dark">("light");

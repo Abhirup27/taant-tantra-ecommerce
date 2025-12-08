@@ -1,15 +1,19 @@
 import { defineConfig, loadEnv } from 'vite'
-import react from '@vitejs/plugin-react'
+// import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from "path";
 import { config, } from "common";
+import { reactRouter } from "@react-router/dev/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
 import type { Config } from 'common/dist/config/config';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-
+  console.log(config.FRONTEND_PORT)
   return {
-    plugins: [react(), tailwindcss()],
+    // plugins: [react(), tailwindcss()],
+    plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
     define: {
       __CONFIG__: JSON.stringify({
         FRONTEND_DOMAIN: config.FRONTEND_DOMAIN,

@@ -8,11 +8,18 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 import type { Config } from 'common/dist/config/config';
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ isSsrBuild, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   console.log(config.FRONTEND_PORT)
   return {
     // plugins: [react(), tailwindcss()],
+    build: {
+      rollupOptions: isSsrBuild
+        ? {
+          input: "./src/server/app.ts",
+        }
+        : undefined,
+    },
     plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
     define: {
       __CONFIG__: JSON.stringify({

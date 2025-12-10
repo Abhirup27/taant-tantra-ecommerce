@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -35,6 +36,8 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src"
+    ".react-router/types/**/*",
+    "src/**/*",
+    "server/**/*"
   ]
 }

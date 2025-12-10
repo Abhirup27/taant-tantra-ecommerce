@@ -116,7 +116,7 @@ const create_supabase_instance = (req: AuthRequest, res: Response, next: NextFun
         return parseCookies(req.headers.cookie! ?? '')
       },
       setAll(cookiesToSet) {
-        // if (res.headersSent) return;
+        if (res.headersSent) return;
 
         for (const { name, value, options } of cookiesToSet) {
           // console.log(name, value, options);

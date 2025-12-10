@@ -1,72 +1,48 @@
-import fs from 'node:fs/promises'
-import express from 'express'
+import compression from "compression";
+import express from "express";
+import morgan from "morgan";
+import { config } from "common";
+import { web_server_base_link } from "./src/utils.ts"
+// Short-circuit the type-checking of the built output.
+const BUILD_PATH = "./dist/server/index.js";
+const DEVELOPMENT = process.env.NODE_ENV === "development";
+const PORT = Number.parseInt(config.FRONTEND_PORT);
 
-// Constants
-const isProduction = process.env.NODE_ENV === 'production'
-const port = process.env.PORT || 3002
-const base = process.env.BASE || '/'
+const app = express();
 
-// Cached production assets
-const templateHtml = isProduction
-  ? await fs.readFile('./dist/client/index.html', 'utf-8')
-  : ''
+app.use(compression());
+app.disable("x-powered-by");
 
-// Create http server
-const app = express()
-// Add Vite or respective production middlewares
-/** @type {import('vite').ViteDevServer | undefined} */
-let vite
-if (!isProduction) {
-  const { createServer } = await import('vite')
-  vite = await createServer({
-    server: { middlewareMode: true },
-    appType: 'custom',
-    base,
-  })
-  app.use(vite.middlewares)
+if (DEVELOPMENT) {
+  console.log("Starting development server");
+  const viteDevServer = await import("vite").then((vite) =>
+    vite.createServer({
+      server: { middlewareMode: true },
+    }),
+  );
+  app.use(viteDevServer.middlewares);
+  app.use(async (req, res, next) => {
+    try {
+      const source = await viteDevServer.ssrLoadModule("./src/server/app.ts");
+      return await source.app(req, res, next);
+    } catch (error) {
+      if (typeof error === "object" && error instanceof Error) {
+        viteDevServer.ssrFixStacktrace(error);
+      }
+      next(error);
+    }
+  });
 } else {
-  const compression = (await import('compression')).default
-  const sirv = (await import('sirv')).default
-  app.use(compression())
-  app.use(base, sirv('./dist/client', { extensions: [] }))
+  console.log("Starting production server");
+  app.use(
+    "/src/assets",
+    express.static("dist/client/assets", { immutable: true, maxAge: "1y" }),
+  );
+  app.use(morgan("tiny"));
+  app.use(express.static("dist/client", { maxAge: "1h" }));
+  app.use(await import(BUILD_PATH).then((mod) => mod.app));
 }
 
-// Serve HTML
-app.use('*all', async (req, res) => {
-  try {
-    const url = req.originalUrl.replace(base, '')
-
-    /** @type {string} */
-    let template
-    /** @type {import('./src/entry-server.ts').render} */
-    let render
-    if (!isProduction) {
-      // Always read fresh template in development
-      template = await fs.readFile('./index.html', 'utf-8')
-      template = await vite.transformIndexHtml(url, template)
-      render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
-
-      console.log('this ran');
-    } else {
-      template = templateHtml
-      render = (await import('./dist/server/entry-server.js')).render
-    }
-
-    const rendered = await render(url)
-    console.log(rendered.css);
-    const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '')
-
-    res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
-  } catch (e) {
-    vite?.ssrFixStacktrace(e)
-    console.log(e.stack)
-    res.status(500).end(e.stack)
-  }
-})
-
-// Start http server
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`)
-})
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

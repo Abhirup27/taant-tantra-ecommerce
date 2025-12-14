@@ -14,7 +14,7 @@ import { OrdersPage } from './components/OrdersPage';
 import { FulfillmentsPage } from './components/FulfillmentsPage';
 import { TrendingUp, ShoppingBag, Users, IndianRupee, Menu, LogOut } from 'lucide-react';
 import { Button } from './components/ui/button';
-
+import "../index.css";
 export default function AdminPage() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);

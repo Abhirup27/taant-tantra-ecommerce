@@ -2,7 +2,6 @@ import compression from "compression";
 import express from "express";
 import morgan from "morgan";
 import { config } from "common";
-import { web_server_base_link } from "./src/utils.ts"
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = "./dist/server/index.js";
 const DEVELOPMENT = process.env.NODE_ENV === "development";

@@ -153,54 +153,85 @@
     @apply bg-background text-foreground;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'GrazieMille-Regular', serif;
   }
 }
 
+@font-face {
+  font-family: 'Arumira';
+  src: url('./assets/fonts/Arumira.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GrazieMille-Regular';
+  src: url('./assets/fonts/GrazieMille-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GrazieMille-Medium';
+  src: url('./assets/fonts/GrazieMille-Medium.otf') format('opentype');
+  font-weight: medium;
+  font-style: normal;
+}
 /**
  * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
  */
 @layer base {
-  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+  /* :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) { */
     h1 {
       font-size: var(--text-2xl);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      font-family: 'Arumira', sans-serif;
     }
 
     h2 {
       font-size: var(--text-xl);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      font-family: 'Arumira', sans-serif;
+
     }
 
     h3 {
       font-size: var(--text-lg);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      font-family: 'Arumira', sans-serif;
+
     }
 
     h4 {
       font-size: var(--text-base);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+       font-family: 'Arumira', sans-serif;
+
     }
 
     p {
       font-size: var(--text-base);
       font-weight: var(--font-weight-normal);
       line-height: 1.5;
+      font-family: 'GrazieMille-Regular', serif;
     }
 
     label {
       font-size: var(--text-base);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+      font-family: 'GrazieMille-Medium', serif;
+
     }
 
     button {
       font-size: var(--text-base);
       font-weight: var(--font-weight-medium);
       line-height: 1.5;
+font-family: 'GrazieMille-Medium', serif;
+
     }
 
     input {
@@ -208,13 +239,37 @@
       font-weight: var(--font-weight-normal);
       line-height: 1.5;
     }
-  }
+  /* } */
 }
 
 html {
   font-size: var(--font-size);
 }
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--muted);
+}
 #container .css-vh2lqg {
   width: var(--viewport-width-scaled);
   min-height: var(--viewport-height-scaled);

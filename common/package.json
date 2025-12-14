@@ -13,7 +13,9 @@
     "migration_generate": "tsc -p tsconfig.json && NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./dist/config/typeorm.config.js ./src/migrations/migration",
     "migration:create": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./src/migrations/migration",
     "migration:dev:run": "tsc -p tsconfig.json && NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./dist/config/typeorm.config.js",
-    "migration:dev:revert": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./dist/config/typeorm.config.js"
+    "migration:dev:revert": "NODE_ENV=development npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./dist/config/typeorm.config.js",
+
+    "seed:run": "tsc -p tsconfig.json && NODE_ENV=development node dist/seeds/index.js"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

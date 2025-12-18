@@ -3,12 +3,20 @@ import { createUserService } from "./user.service.js";
 import { type UserService } from "./user.service.js";
 import { createAuthService, type AuthService } from "./auth.service.js";
 import type { User } from "common";
+import type { GlideClient } from "@valkey/valkey-glide";
+import { createCronService } from "./cron.service.js";
 
-export function createAppServices(dataSource: DataSource): {
+export async function createAppServices(dataSource: DataSource, valkeyClient: GlideClient): Promise<{
   userService: UserService;
   authService: AuthService;
-} {
+}> {
   const userRepo = dataSource.getRepository<User>('User');
+
+
+  const cronService = await createCronService(valkeyClient);
+  //run auth with shiprocket at startup
+  cronService.auth_shiprocket();
+
   // let newUser = userRepo.create({});
   // newUser.id = 13;
   // userRepo.save(newUser);

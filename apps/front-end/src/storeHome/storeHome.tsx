@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { FeaturedCarousel } from "./components/FeaturedCarousel";
@@ -117,9 +117,11 @@ const products: Product[] = [
 ];
 
 const categories = ["All", "Silk", "Cotton", "Designer", "Wedding", "Party Wear", "Casual"];
+const CART_STORAGE_KEY = "taanttantra_cart";
 
 export function Store() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -151,6 +153,7 @@ export function Store() {
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === productId ? { ...item, quantity } : item
+
       )
     );
   };
@@ -165,6 +168,21 @@ export function Store() {
   };
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("taanttantra_cart");
+      if (stored) {
+        setCartItems(JSON.parse(stored));
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
     <div className="tailwind css-myl2ny css-exq74d">

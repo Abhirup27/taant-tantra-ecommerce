@@ -30,6 +30,10 @@ const configSchema = z.object({
   SUPABASE_URL: z.string().default(''),
   SUPABASE_KEY: z.string().default(''),
 
+  SHIPROCKET_BASE_URL: z.string().default(''),
+  SHIPROCKET_API_ID: z.email().default(''),
+  SHIPROCKET_API_SECRET: z.string().default(''),
+
   RATE_LIMITING_WINDOW: z.coerce.number().positive().default(60),
   JWT_SECRET: z
     .string()
@@ -45,10 +49,10 @@ const configSchema = z.object({
     .transform((val) => val.split(",").map((s) => s.trim()))
     .pipe(z.array(logLevelSchema))
     .default(["debug"]),
-  REDIS_HOST: z.string().default("localhost"),
-  REDIS_PORT: z.coerce.number().positive().default(6379),
-  REDIS_USERNAME: z.string(),
-  REDIS_PASSWORD: z.string(),
+  VALKEY_HOST: z.string().default("localhost"),
+  VALKEY_PORT: z.coerce.number().positive().default(6379),
+  VALKEY_USERNAME: z.string(),
+  VALKEY_PASSWORD: z.string(),
 
   FRONTEND_DOMAIN: z.string().default('localhost'),
   FRONTEND_PORT: z.number().int().positive().default(3002),

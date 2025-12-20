@@ -57,7 +57,19 @@ interface Manufacturer {
   ownerName: string;
   email: string;
   phone: string;
-  address: string;
+  address: {
+    full_name: string,
+    phone: string,
+    address_line_1: string,
+    address_line_2: string,
+    locality: string,
+    city: string,
+    district: string,
+    state: string,
+    pincode: string,// number,
+    country_code: string,
+    address_type: "pickup" | "warehouse" | "return",
+  }
   joinDate: string;
   totalProducts: number;
   approvedProducts: number;
@@ -102,8 +114,19 @@ const initialManufacturers: Manufacturer[] = [
     ownerName: 'Rajesh Kumar',
     email: 'rajesh@kanchiweave.com',
     phone: '+91 98765 43210',
-    address: 'Kanchipuram, Tamil Nadu',
-    joinDate: '2023-06-15',
+    address: {
+      full_name: 'Rajesh Kumar',
+      phone: '9876543210',
+      address_line_1: '12, Silk Weaver Street',
+      address_line_2: 'Near Ekambareswarar Temple',
+      locality: 'Little Kanchipuram',
+      city: 'Kanchipuram',
+      district: 'Kanchipuram',
+      state: 'Tamil Nadu',
+      pincode: '631501',
+      country_code: 'IN',
+      address_type: 'pickup',
+    }, joinDate: '2023-06-15',
     totalProducts: 45,
     approvedProducts: 42,
     pendingProducts: 3,
@@ -134,8 +157,19 @@ const initialManufacturers: Manufacturer[] = [
     ownerName: 'Anita Das',
     email: 'anita@bengalhandloom.com',
     phone: '+91 98765 43211',
-    address: 'Kolkata, West Bengal',
-    joinDate: '2023-07-20',
+    address: {
+      full_name: 'Anita Das',
+      phone: '9876543211',
+      address_line_1: '45, Rabindra Sarani',
+      address_line_2: 'Near Shobhabazar Metro',
+      locality: 'Shobhabazar',
+      city: 'Kolkata',
+      district: 'Kolkata',
+      state: 'West Bengal',
+      pincode: '700005',
+      country_code: 'IN',
+      address_type: 'pickup',
+    }, joinDate: '2023-07-20',
     totalProducts: 38,
     approvedProducts: 35,
     pendingProducts: 3,
@@ -166,8 +200,19 @@ const initialManufacturers: Manufacturer[] = [
     ownerName: 'Prakash Sharma',
     email: 'prakash@varanasisilk.com',
     phone: '+91 98765 43212',
-    address: 'Varanasi, Uttar Pradesh',
-    joinDate: '2023-05-10',
+    address: {
+      full_name: 'Prakash Sharma',
+      phone: '9876543212',
+      address_line_1: '8, Madanpura Road',
+      address_line_2: 'Near Assi Ghat',
+      locality: 'Bhelupur',
+      city: 'Varanasi',
+      district: 'Varanasi',
+      state: 'Uttar Pradesh',
+      pincode: '221001',
+      country_code: 'IN',
+      address_type: 'pickup',
+    }, joinDate: '2023-05-10',
     totalProducts: 52,
     approvedProducts: 50,
     pendingProducts: 2,
@@ -198,7 +243,19 @@ const initialManufacturers: Manufacturer[] = [
     ownerName: 'Sanjay Patel',
     email: 'sanjay@moderntextiles.com',
     phone: '+91 98765 43213',
-    address: 'Surat, Gujarat',
+    address: {
+      full_name: 'Sanjay Patel',
+      phone: '9876543213',
+      address_line_1: '101, Ring Road Industrial Estate',
+      address_line_2: 'Opp. Textile Market',
+      locality: 'Varachha',
+      city: 'Surat',
+      district: 'Surat',
+      state: 'Gujarat',
+      pincode: '395006',
+      country_code: 'IN',
+      address_type: 'pickup',
+    },
     joinDate: '2023-08-05',
     totalProducts: 28,
     approvedProducts: 26,
@@ -230,8 +287,19 @@ const initialManufacturers: Manufacturer[] = [
     ownerName: 'Meera Verma',
     email: 'meera@chanderiweavers.com',
     phone: '+91 98765 43214',
-    address: 'Chanderi, Madhya Pradesh',
-    joinDate: '2023-09-12',
+    address: {
+      full_name: 'Meera Verma',
+      phone: '9876543214',
+      address_line_1: '22, Handloom Colony',
+      address_line_2: 'Near Chanderi Fort',
+      locality: 'Chanderi Town',
+      city: 'Chanderi',
+      district: 'Ashoknagar',
+      state: 'Madhya Pradesh',
+      pincode: '473446',
+      country_code: 'IN',
+      address_type: 'pickup',
+    }, joinDate: '2023-09-12',
     totalProducts: 31,
     approvedProducts: 29,
     pendingProducts: 2,
@@ -476,19 +544,42 @@ export function ManufacturersPage() {
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [showAuthError, setShowAuthError] = useState(false);
-  
-  const [newManufacturer, setNewManufacturer] = useState({
-    name: '',
-    ownerName: '',
-    email: '',
-    phone: '',
-    address: ''
+
+
+  const [newManufacturer, setNewManufacturer] = useState<Manufacturer>({
+    id: "",
+    name: "",
+    ownerName: "",
+    email: "",
+    phone: "",
+    address: {
+      full_name: "",
+      phone: "",
+      address_line_1: "",
+      address_line_2: "",
+      locality: "",
+      city: "",
+      district: "",
+      state: "",
+      pincode: "",
+      country_code: "IN",
+      address_type: "pickup",
+    },
+    joinDate: "",
+    totalProducts: 0,
+    approvedProducts: 0,
+    pendingProducts: 0,
+    totalRevenue: 0,
+    deliveryPartners: [],
+    teamMembers: [],
+
   });
+
 
   const filteredManufacturers = manufacturers.filter(mfr =>
     mfr.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     mfr.ownerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    mfr.address.toLowerCase().includes(searchQuery.toLowerCase())
+    mfr.address.address_line_1.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const totalPendingProducts = manufacturers.reduce((acc, m) => acc + m.pendingProducts, 0);
@@ -503,7 +594,7 @@ export function ManufacturersPage() {
           ownerName: newManufacturer.ownerName,
           email: newManufacturer.email,
           phone: newManufacturer.phone,
-          address: newManufacturer.address,
+          address: { ...newManufacturer.address },
           joinDate: new Date().toISOString().split('T')[0],
           totalProducts: 0,
           approvedProducts: 0,
@@ -514,11 +605,31 @@ export function ManufacturersPage() {
         };
         setManufacturers([...manufacturers, manufacturer]);
         setNewManufacturer({
-          name: '',
-          ownerName: '',
-          email: '',
-          phone: '',
-          address: ''
+          id: "",
+          name: "",
+          ownerName: "",
+          email: "",
+          phone: "",
+          address: {
+            full_name: "",
+            phone: "",
+            address_line_1: "",
+            address_line_2: "",
+            locality: "",
+            city: "",
+            district: "",
+            state: "",
+            pincode: "",
+            country_code: "IN",
+            address_type: "pickup",
+          },
+          joinDate: "",
+          totalProducts: 0,
+          approvedProducts: 0,
+          pendingProducts: 0,
+          totalRevenue: 0,
+          deliveryPartners: [],
+          teamMembers: [],
         });
         setAdminEmail('');
         setAdminPassword('');
@@ -545,20 +656,20 @@ export function ManufacturersPage() {
         }
         return m;
       }));
-      
+
       const newLog: Log = {
         id: `LOG${String(logs.length + 1).padStart(3, '0')}`,
         manufacturerId: product.manufacturerId,
         manufacturerName: product.manufacturer,
         action: 'Product Approved',
         details: `${product.name} approved by admin`,
-        timestamp: new Date().toLocaleString('en-IN', { 
-          year: 'numeric', 
-          month: '2-digit', 
-          day: '2-digit', 
-          hour: '2-digit', 
+        timestamp: new Date().toLocaleString('en-IN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
           minute: '2-digit',
-          hour12: true 
+          hour12: true
         }),
         type: 'approval'
       };
@@ -579,20 +690,20 @@ export function ManufacturersPage() {
         }
         return m;
       }));
-      
+
       const newLog: Log = {
         id: `LOG${String(logs.length + 1).padStart(3, '0')}`,
         manufacturerId: product.manufacturerId,
         manufacturerName: product.manufacturer,
         action: 'Product Rejected',
         details: `${product.name} rejected by admin`,
-        timestamp: new Date().toLocaleString('en-IN', { 
-          year: 'numeric', 
-          month: '2-digit', 
-          day: '2-digit', 
-          hour: '2-digit', 
+        timestamp: new Date().toLocaleString('en-IN', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
           minute: '2-digit',
-          hour12: true 
+          hour12: true
         }),
         type: 'approval'
       };
@@ -708,96 +819,244 @@ export function ManufacturersPage() {
                         Add Manufacturer
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px]">
+                    <DialogContent className="sm:max-w-[500px] max-h-[90vh] sm:max-h-[90vh] flex flex-col">
                       <DialogHeader>
                         <DialogTitle>Add New Manufacturer</DialogTitle>
                       </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="mfr-name">Business Name</Label>
-                          <Input
-                            id="mfr-name"
-                            placeholder="e.g., Kanchipuram Weavers Co."
-                            value={newManufacturer.name}
-                            onChange={(e) => setNewManufacturer({ ...newManufacturer, name: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="owner-name">Owner Name</Label>
-                          <Input
-                            id="owner-name"
-                            placeholder="e.g., Rajesh Kumar"
-                            value={newManufacturer.ownerName}
-                            onChange={(e) => setNewManufacturer({ ...newManufacturer, ownerName: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="mfr-email">Email</Label>
-                          <Input
-                            id="mfr-email"
-                            type="email"
-                            placeholder="e.g., contact@manufacturer.com"
-                            value={newManufacturer.email}
-                            onChange={(e) => setNewManufacturer({ ...newManufacturer, email: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="mfr-phone">Phone</Label>
-                          <Input
-                            id="mfr-phone"
-                            placeholder="e.g., +91 98765 43210"
-                            value={newManufacturer.phone}
-                            onChange={(e) => setNewManufacturer({ ...newManufacturer, phone: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="mfr-location">Address</Label>
-                          <Input
-                            id="mfr-location"
-                            placeholder="e.g., Kanchipuram, Tamil Nadu"
-                            value={newManufacturer.address}
-                            onChange={(e) => setNewManufacturer({ ...newManufacturer, address: e.target.value })}
-                          />
-                        </div>
-                        
-                        <div className="border-t border-border pt-4 mt-4">
-                          <p className="text-muted-foreground mb-4">Super Admin Authentication Required</p>
-                          <div className="space-y-3">
-                            <div className="space-y-2">
-                              <Label htmlFor="admin-email">Admin Email</Label>
-                              <Input
-                                id="admin-email"
-                                type="email"
-                                placeholder="admin@taanttantra.com"
-                                value={adminEmail}
-                                onChange={(e) => {
-                                  setAdminEmail(e.target.value);
-                                  setShowAuthError(false);
-                                }}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label htmlFor="admin-password">Admin Password</Label>
-                              <Input
-                                id="admin-password"
-                                type="password"
-                                placeholder="Enter password"
-                                value={adminPassword}
-                                onChange={(e) => {
-                                  setAdminPassword(e.target.value);
-                                  setShowAuthError(false);
-                                }}
-                              />
-                            </div>
-                            {showAuthError && (
-                              <div className="flex items-center gap-2 text-destructive">
-                                <AlertCircle className="w-4 h-4" />
-                                <p>Invalid admin credentials</p>
+                      <div className="flex-1 overflow-y-auto pr-2">
+                        <div className="space-y-3 py-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="mfr-name">Business Name</Label>
+                            <Input
+                              id="mfr-name"
+                              placeholder="e.g., Kanchipuram Weavers Co."
+                              value={newManufacturer.name}
+                              onChange={(e) => setNewManufacturer({ ...newManufacturer, name: e.target.value })}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="owner-name">Owner Name</Label>
+                            <Input
+                              id="owner-name"
+                              placeholder="e.g., Rajesh Kumar"
+                              value={newManufacturer.ownerName}
+                              onChange={(e) => setNewManufacturer({ ...newManufacturer, ownerName: e.target.value })}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="mfr-email">Email</Label>
+                            <Input
+                              id="mfr-email"
+                              type="email"
+                              placeholder="e.g., contact@manufacturer.com"
+                              value={newManufacturer.email}
+                              onChange={(e) => setNewManufacturer({ ...newManufacturer, email: e.target.value })}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="mfr-phone">Phone</Label>
+                            <Input
+                              id="mfr-phone"
+                              placeholder="e.g., +91 98765 43210"
+                              value={newManufacturer.phone}
+                              onChange={(e) => setNewManufacturer({ ...newManufacturer, phone: e.target.value })}
+                            />
+                          </div>
+
+                          <div className="border-t border-border pt-4 mt-4 space-y-4">
+                            <p className="text-muted-foreground font-medium">Manufacturer Address</p>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="col-span-2 space-y-2">
+                                <Label htmlFor="full-name">Contact Person Name</Label>
+                                <Input
+                                  id="full-name"
+                                  placeholder="e.g., Rajesh Kumar"
+                                  value={newManufacturer.address.full_name}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, full_name: e.target.value },
+                                    })
+                                  }
+                                />
                               </div>
-                            )}
+
+                              <div className="col-span-2 space-y-2">
+                                <Label htmlFor="phone">Contact Phone</Label>
+                                <Input
+                                  id="phone"
+                                  placeholder="9876543210"
+                                  value={newManufacturer.address.phone}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, phone: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="col-span-2 space-y-2">
+                                <Label htmlFor="addr1">Address Line 1</Label>
+                                <Input
+                                  id="addr1"
+                                  placeholder="Building, Street name"
+                                  value={newManufacturer.address.address_line_1}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, address_line_1: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="col-span-2 space-y-2">
+                                <Label htmlFor="addr2">Address Line 2 (Landmark)</Label>
+                                <Input
+                                  id="addr2"
+                                  placeholder="Near temple, main road"
+                                  value={newManufacturer.address.address_line_2}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, address_line_2: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>Locality</Label>
+                                <Input
+                                  placeholder="Area / Colony"
+                                  value={newManufacturer.address.locality}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, locality: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>City</Label>
+                                <Input
+                                  placeholder="City"
+                                  value={newManufacturer.address.city}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, city: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>District</Label>
+                                <Input
+                                  placeholder="District"
+                                  value={newManufacturer.address.district}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, district: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>State</Label>
+                                <Input
+                                  placeholder="State"
+                                  value={newManufacturer.address.state}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, state: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>Pincode</Label>
+                                <Input
+                                  placeholder="6-digit pincode"
+                                  value={newManufacturer.address.pincode}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: { ...newManufacturer.address, pincode: e.target.value },
+                                    })
+                                  }
+                                />
+                              </div>
+
+                              <div className="space-y-2">
+                                <Label>Address Type</Label>
+                                <select
+                                  className="w-full rounded-md border bg-background px-3 py-2"
+                                  value={newManufacturer.address.address_type}
+                                  onChange={(e) =>
+                                    setNewManufacturer({
+                                      ...newManufacturer,
+                                      address: {
+                                        ...newManufacturer.address,
+                                        address_type: e.target.value as "pickup" | "warehouse" | "return",
+                                      },
+                                    })
+                                  }
+                                >
+                                  <option value="pickup">Pickup</option>
+                                  <option value="warehouse">Warehouse</option>
+                                  <option value="return">Return</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="border-t border-border pt-4 mt-4">
+                            <p className="text-muted-foreground mb-4">Super Admin Authentication Required</p>
+                            <div className="space-y-3">
+                              <div className="space-y-2">
+                                <Label htmlFor="admin-email">Admin Email</Label>
+                                <Input
+                                  id="admin-email"
+                                  type="email"
+                                  placeholder="admin@taanttantra.com"
+                                  value={adminEmail}
+                                  onChange={(e) => {
+                                    setAdminEmail(e.target.value);
+                                    setShowAuthError(false);
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="admin-password">Admin Password</Label>
+                                <Input
+                                  id="admin-password"
+                                  type="password"
+                                  placeholder="Enter password"
+                                  value={adminPassword}
+                                  onChange={(e) => {
+                                    setAdminPassword(e.target.value);
+                                    setShowAuthError(false);
+                                  }}
+                                />
+                              </div>
+                              {showAuthError && (
+                                <div className="flex items-center gap-2 text-destructive">
+                                  <AlertCircle className="w-4 h-4" />
+                                  <p>Invalid admin credentials</p>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                        
                         <Button onClick={addManufacturer} className="w-full">
                           Add Manufacturer
                         </Button>
@@ -834,7 +1093,7 @@ export function ManufacturersPage() {
                         <div className="mt-3 space-y-1">
                           <div className="flex items-center gap-2 text-muted-foreground">
                             <MapPin className="w-4 h-4" />
-                            <span className="truncate">{manufacturer.address}</span>
+                            <span className="truncate">{manufacturer.address.address_line_1}</span>
                           </div>
                           <div className="flex items-center gap-2 text-muted-foreground">
                             <Mail className="w-4 h-4" />
@@ -1065,8 +1324,8 @@ export function ManufacturersPage() {
                   <h3 className="mb-3">Pending Approvals</h3>
                   <div className="space-y-2">
                     {getManufacturerPendingProducts(selectedManufacturer.id).map((product) => (
-                      <div 
-                        key={product.id} 
+                      <div
+                        key={product.id}
                         className="p-3 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors"
                         onClick={() => setSelectedPendingProduct(product)}
                       >

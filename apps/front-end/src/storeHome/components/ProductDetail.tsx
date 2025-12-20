@@ -6,6 +6,9 @@ import { Dialog, DialogContent } from "./ui/dialog";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { type Product } from "./ProductCard";
 import { DecorativeBorder } from "./DecorativeBorder";
+import { Label } from "recharts";
+import { Input } from "./ui/input";
+import { web_server_base_link } from "@/utils";
 
 interface ProductDetailProps {
   product: Product | null;
@@ -20,6 +23,46 @@ export function ProductDetail({ product, isOpen, onClose, onAddToCart }: Product
   const [scrollPercentage, setScrollPercentage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+
+  const [pincodeInput, setPincodeInput] = useState("");
+  const [userPincode, setUserPincode] = useState<string | null>(null);
+
+  const [checkingPincode, setCheckingPincode] = useState(false);
+  const [isServiceable, setIsServiceable] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!userPincode) return;
+
+    const controller = new AbortController();
+
+    const checkServiceability = async () => {
+      try {
+        setCheckingPincode(true);
+        setIsServiceable(null);
+
+        const url =
+          web_server_base_link() +
+          `/api/v1/location_Serviceability?pincode=${userPincode}`;
+
+        const res = await fetch(url, { signal: controller.signal });
+        const data = await res.json();
+
+        // adjust this based on your API response
+        setIsServiceable(Boolean(data?.serviceable));
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          setIsServiceable(false);
+        }
+      } finally {
+        setCheckingPincode(false);
+      }
+    };
+
+    checkServiceability();
+
+    return () => controller.abort();
+  }, [userPincode]);
 
   // Detect mobile viewport
   useEffect(() => {
@@ -184,8 +227,8 @@ export function ProductDetail({ product, isOpen, onClose, onAddToCart }: Product
                           key={index}
                           onClick={() => setCurrentImageIndex(index)}
                           className={`h-2 rounded-full transition-all ${index === currentImageIndex
-                              ? 'w-6 bg-primary'
-                              : 'w-2 bg-white/50 hover:bg-white/75'
+                            ? 'w-6 bg-primary'
+                            : 'w-2 bg-white/50 hover:bg-white/75'
                             }`}
                           aria-label={`View image ${index + 1}`}
                         />
@@ -283,6 +326,54 @@ export function ProductDetail({ product, isOpen, onClose, onAddToCart }: Product
                     <span>100% authentic products</span>
                   </div>
                 </div>
+              </div>
+
+
+              <div className="space-y-2 mb-6">
+                <Label>Pincode</Label>
+
+                {/* Input + Button row */}
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="6-digit pincode"
+                    value={pincodeInput}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      if (value.length <= 6) {
+                        setPincodeInput(value);
+                      }
+                    }}
+                  />
+
+                  <Button
+                    className="min-w-[90px]"
+                    disabled={pincodeInput.length !== 6 || checkingPincode}
+                    onClick={() => setUserPincode(pincodeInput)}
+                  >
+                    {checkingPincode ? (
+                      <span className="flex items-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        Checking
+                      </span>
+                    ) : (
+                      "Check"
+                    )}
+                  </Button>
+                </div>
+
+                {/* Result text */}
+                {isServiceable !== null && !checkingPincode && (
+                  <p
+                    className={`text-sm font-medium ${isServiceable
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-red-600 dark:text-red-400"
+                      }`}
+                  >
+                    {isServiceable
+                      ? "Delivery available to this pincode"
+                      : "Sorry, delivery is not available to this pincode"}
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-3">

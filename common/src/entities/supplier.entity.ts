@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, OneToOne, JoinColumn, } from "typeorm";
 import User from "./user.entity.js";
 
 @Entity('suppliers')
@@ -37,7 +37,6 @@ export default class Supplier {
     nullable: false,
   })
   name!: string; //supplier's name
-
 
   @OneToOne(() => User)
   @JoinColumn({ name: "sa_id" })

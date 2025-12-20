@@ -16,6 +16,7 @@ export async function createAppServices(dataSource: DataSource, valkeyClient: Gl
   const cronService = await createCronService(valkeyClient);
   //run auth with shiprocket at startup
   cronService.auth_shiprocket();
+  cronService.get_servicibility()
 
   // let newUser = userRepo.create({});
   // newUser.id = 13;

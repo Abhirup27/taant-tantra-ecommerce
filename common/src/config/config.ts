@@ -82,7 +82,7 @@ const configSchema = z.object({
 export type Config = z.infer<typeof configSchema>;
 
 // Parse and validate
-export const parseConfig = (): Config => {
+export const parse_Config = (): Config => {
   try {
     const config = configSchema.parse(process.env);
     return config;
@@ -97,5 +97,5 @@ export const parseConfig = (): Config => {
   }
 };
 
-const config = parseConfig();
+const config = parse_Config();
 export default config;

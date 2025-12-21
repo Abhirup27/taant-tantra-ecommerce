@@ -6,7 +6,7 @@ export interface AuthService {
   does_user_exist: (id: string) => Promise<boolean>;
   create_user: (user: { id: string, email?: string, first_name: string, last_name?: string, phone_number?: string }) => Promise<number>;
 }
-export function createAuthService(userRepo: Repository<User>): AuthService {
+export function create_Auth_Service(userRepo: Repository<User>): AuthService {
 
   async function does_user_exist(id: string): Promise<boolean> {
     return await userRepo.existsBy({ id });

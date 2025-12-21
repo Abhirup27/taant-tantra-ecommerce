@@ -1,7 +1,9 @@
 import { type Request, type Response } from "express";
 import { type UserService } from "../services/user.service.js";
-import { createController } from "../utils/createController.js";
+import { create_Controller } from "../utils/createController.js";
 
+
+export type UserController = ReturnType<typeof create_User_Controller>;
 type Deps = {
   userService: UserService;
 }
@@ -18,7 +20,7 @@ type Deps = {
 //   return { getUser, getUserById };
 // }
 
-export const createUserController = createController((deps: Deps) => {
+export const create_User_Controller = create_Controller((deps: Deps) => {
 
   async function getProfile(_req: Request, _res: Response) {
 

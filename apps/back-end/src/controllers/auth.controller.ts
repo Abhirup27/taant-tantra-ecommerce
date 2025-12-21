@@ -1,9 +1,12 @@
-import { createController } from "../utils/createController.js";
+import { create_Controller } from "../utils/createController.js";
 import { type Response } from "express";
 import { construct_home_page_link, web_server_base_link } from "../utils/constructURL.js";
 import type AuthRequest from "../types/AuthRequest.d.ts";
 import { type AuthService } from "../services/auth.service.js";
 import { z } from "zod";
+
+
+export type AuthController = ReturnType<typeof create_Auth_Controller>;
 
 type Deps = {
   authService: AuthService
@@ -20,7 +23,7 @@ export const LoginSchema = z.object({
 
 export type LoginBody = z.infer<typeof LoginSchema>;
 
-export const createAuthController = createController((deps: Deps) => {
+export const create_Auth_Controller = create_Controller((deps: Deps) => {
 
   async function emailSignIn(req: AuthRequest, res: Response) {
 

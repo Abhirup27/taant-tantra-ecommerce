@@ -5,7 +5,7 @@ export interface UserService {
   getUsers: () => Promise<User[]>;
   getUserById: (id: string) => Promise<any>;
 }
-export function createUserService(userRepo: Repository<User>): UserService {
+export function create_User_Service(userRepo: Repository<User>): UserService {
   async function getUsers(): Promise<User[]> {
     return await userRepo.find();
   }

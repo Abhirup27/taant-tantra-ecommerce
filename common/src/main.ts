@@ -2,22 +2,6 @@
 import { AppDataSource } from "./config/typeorm.config.js";
 import config from "./config/config.js";
 import User from "./entities/user.entity.js";
-interface ServerToClientEvents {
-  noArg: () => void;
-  basicEmit: (a: number, b: string, c: Buffer) => void;
-  withAck: (d: string, callback: (e: number) => void) => void;
-}
+import Supplier from "./entities/supplier.entity.js";
 
-interface ClientToServerEvents {
-  hello: () => void;
-}
-
-interface InterServerEvents {
-  ping: () => void;
-}
-
-interface SocketData {
-  name: string;
-  age: number;
-}
-export { type User, AppDataSource, config, ServerToClientEvents, ClientToServerEvents, InterServerEvents, SocketData };
+export { type User, type Supplier, AppDataSource, config };

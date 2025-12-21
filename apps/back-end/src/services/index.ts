@@ -1,31 +1,35 @@
 import { DataSource } from "typeorm";
-import { createUserService } from "./user.service.js";
+import { create_User_Service } from "./user.service.js";
 import { type UserService } from "./user.service.js";
-import { createAuthService, type AuthService } from "./auth.service.js";
-import type { User } from "common";
+import { create_Auth_Service, type AuthService } from "./auth.service.js";
+import type { Supplier, User } from "common";
 import type { GlideClient } from "@valkey/valkey-glide";
-import { createCronService } from "./cron.service.js";
-
-export async function createAppServices(dataSource: DataSource, valkeyClient: GlideClient): Promise<{
-  userService: UserService;
-  authService: AuthService;
-}> {
-  const userRepo = dataSource.getRepository<User>('User');
+import { create_Cron_Service } from "./cron.service.js";
+import { create_Shiprocket_Service } from "./shiprocket.service.js";
 
 
-  const cronService = await createCronService(valkeyClient);
-  //run auth with shiprocket at startup
-  cronService.auth_shiprocket();
-  cronService.get_servicibility()
+export type Services = {
+  user_service: UserService,
+  auth_service: AuthService
+};
 
+export async function create_App_Services(dataSource: DataSource, valkeyClient: GlideClient): Promise<Services> {
+  const user_repo = dataSource.getRepository<User>('User');
+  const suppliers_repo = dataSource.getRepository<Supplier>('suppliers');
   // let newUser = userRepo.create({});
   // newUser.id = 13;
   // userRepo.save(newUser);
   // console.log(userRepo);
-  const userService = createUserService(userRepo);
-  const authService = createAuthService(userRepo);
+  const user_service = create_User_Service(user_repo);
+  const auth_service = create_Auth_Service(user_repo);
+  const suppliers_service = create_Shiprocket_Service(valkeyClient, suppliers_repo);
+
+  await create_Cron_Service(valkeyClient, suppliers_service);
+  //run auth with shiprocket at startup
+
+
   return {
-    userService,
-    authService
+    user_service: user_service,
+    auth_service: auth_service
   };
 }

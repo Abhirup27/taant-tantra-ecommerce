@@ -1,18 +1,15 @@
 import express from "express";
 import { type Express } from "express";
 import { DataSource } from "typeorm";
-import { createAppServices } from "./services/index.js";
+import { create_App_Services } from "./services/index.js";
 import * as shared from "common";
-import { createUserRoutes } from "./routes/user.routes.js";
-import { createAuthRoutes } from "./routes/auth.routes.js";
 import cors from "cors";
 import { GlideClient } from "@valkey/valkey-glide";
 import { config } from "common";
+import { create_Routes } from "./routes/routes.js";
 
 
-
-
-async function initValkeyClient() {
+async function f_initValkeyClient() {
   const addresses = [
     {
       host: config.VALKEY_HOST,
@@ -23,7 +20,7 @@ async function initValkeyClient() {
   const client = await GlideClient.createClient({
     addresses: addresses,
     requestTimeout: 500, // 500ms timeout
-    clientName: "test_standalone_client",
+    clientName: "taant_tantra_backend",
   }).then((client): GlideClient => {
     console.log("Valkey client initialized");
     return client;
@@ -36,7 +33,7 @@ async function initValkeyClient() {
   return client;
 }
 
-function initDB() {
+function f_initDB() {
   return shared.AppDataSource.initialize()
     .then((dataSource): DataSource => {
       console.log("Data Source has been initialized");
@@ -48,13 +45,15 @@ function initDB() {
     });
 }
 
-async function bootstrap(): Promise<Express> {
+async function f_bootstrap(): Promise<Express> {
   // console.log(JSON.stringify(shared.config));
   const app = express();
   app.use(express.json());
-  const dbConnection = await initDB();
-  const valkeyConnection = await initValkeyClient();
-  const services = await createAppServices(dbConnection, valkeyConnection);
+
+  const db_connection = await f_initDB();
+  const valkey_client = await f_initValkeyClient();
+
+  const services = await create_App_Services(db_connection, valkey_client);
 
   //SET THIS WHEN ABOUT TO DEPLOY
   app.use(cors({
@@ -65,15 +64,12 @@ async function bootstrap(): Promise<Express> {
   }))
 
   //ROUTES MUST COME AFTER CORS AND CSRF MIDDLEWARE;
-  const userRoutes = createUserRoutes(services.userService);
-  const authRoutes = createAuthRoutes(services.authService);
-  app.use([userRoutes, authRoutes]);
-
-
+  const routes = create_Routes(services).router;
+  app.use(routes);
 
   return app;
 }
-const app = await bootstrap();
+const app = await f_bootstrap();
 
 app.listen(shared.config.BACKEND_PORT, () => {
   console.log(`Server running on ${shared.config.BACKEND_DOMAIN} at ${shared.config.BACKEND_PORT}`);

@@ -43,11 +43,11 @@ export function ProductDetail({ product, isOpen, onClose, onAddToCart }: Product
 
         const url =
           web_server_base_link() +
-          `/api/v1/location_Serviceability?pincode=${userPincode}`;
+          `/api/v1/location_Serviceability?product_id=P_1&pincode=${userPincode}`;
 
         const res = await fetch(url, { signal: controller.signal });
         const data = await res.json();
-
+        console.log(data);
         // adjust this based on your API response
         setIsServiceable(Boolean(data?.serviceable));
       } catch (err: any) {
@@ -365,8 +365,8 @@ export function ProductDetail({ product, isOpen, onClose, onAddToCart }: Product
                 {isServiceable !== null && !checkingPincode && (
                   <p
                     className={`text-sm font-medium ${isServiceable
-                        ? "text-green-600 dark:text-green-400"
-                        : "text-red-600 dark:text-red-400"
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
                       }`}
                   >
                     {isServiceable

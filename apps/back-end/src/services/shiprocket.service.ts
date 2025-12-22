@@ -6,7 +6,7 @@ import type { Repository } from "typeorm";
 export interface ShiprocketService {
 
   auth_Shiprocket: () => Promise<boolean>;
-  check_Pincode_Serviceability: (product_id: string, pincode: number) => Promise<boolean>;
+  check_Pincode_Serviceability: (product_id: string, pincode: string) => Promise<boolean>;
 }
 
 export function create_Shiprocket_Service(valkeyClient: GlideClient, _suppliersRepository: Repository<Supplier>): ShiprocketService {
@@ -40,7 +40,7 @@ export function create_Shiprocket_Service(valkeyClient: GlideClient, _suppliersR
     }
   }
 
-  async function check_Pincode_Serviceability(product_id: string, pincode: number): Promise<boolean> {
+  async function check_Pincode_Serviceability(product_id: string, pincode: string): Promise<boolean> {
     try {
       //fetch product info, the supplier, the stock and then fetch the pincode of all the pickup/warehouses.
       product_id = 'P_01';
@@ -61,8 +61,12 @@ export function create_Shiprocket_Service(valkeyClient: GlideClient, _suppliersR
       }
 
       const data = await response.json();
-      const validatedData = ShiprocketServiceabilitySchema.parse(data);
-      console.log(validatedData.data.available_courier_companies[0]);
+      const validatedData = ShiprocketServiceabilitySchema.safeParse(data);
+      if (!validatedData.success) {
+        console.log(validatedData.error.cause);
+        return false;
+      }
+      console.log(validatedData.data.data.available_courier_companies[0]);
     } catch (error) {
       console.error('Error getting servicibility for area:', error);
     }

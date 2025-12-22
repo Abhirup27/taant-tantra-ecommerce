@@ -8,3 +8,6 @@ export function create_Controller<TDeps, TController>(
     return factory(deps);
   };
 }
+
+export type ControllerInstance<T extends (...args: any) => any> =
+  ReturnType<T>;

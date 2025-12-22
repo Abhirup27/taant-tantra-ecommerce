@@ -8,10 +8,10 @@ export function create_Auth_Routes(controller: AuthController) {
 
   // router.use(create_supabase_instance);
 
-  router.get('/auth/google', create_supabase_instance, controller.googleAuthInit);
-  router.get('/auth/v1/callback', create_supabase_instance, controller.callback);
+  router.get('/auth/google', create_supabase_instance, controller.f_google_Auth_Init);
+  router.get('/auth/v1/callback', create_supabase_instance, controller.f_callback);
 
-  router.post('/auth/signin', create_supabase_instance, controller.emailSignIn);
+  router.post('/auth/signin', create_supabase_instance, controller.f_email_Sign_In);
 
   // router.options('/auth/signin', cors({
   //   origin: "http://www.localhost:3002",

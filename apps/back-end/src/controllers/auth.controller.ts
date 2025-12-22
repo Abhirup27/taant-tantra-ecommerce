@@ -25,7 +25,7 @@ export type LoginBody = z.infer<typeof LoginSchema>;
 
 export const create_Auth_Controller = create_Controller((deps: Deps) => {
 
-  async function emailSignIn(req: AuthRequest, res: Response) {
+  async function f_email_Sign_In(req: AuthRequest, res: Response) {
 
     const validation = LoginSchema.safeParse(req.body);
     console.log('here');
@@ -55,7 +55,7 @@ export const create_Auth_Controller = create_Controller((deps: Deps) => {
     }
 
   }
-  async function callback(req: AuthRequest, res: Response) {
+  async function f_callback(req: AuthRequest, res: Response) {
     // console.log(req.cookies, req.params
     //   , req.query);
 
@@ -101,7 +101,7 @@ export const create_Auth_Controller = create_Controller((deps: Deps) => {
       return res.redirect(303, construct_home_page_link());
     }
   }
-  async function googleAuthInit(req: AuthRequest, res: Response) {
+  async function f_google_Auth_Init(req: AuthRequest, res: Response) {
     const webServerURL = web_server_base_link();
     // console.log(webServerURL);
     const { data, error } = await req.supabaseInstance.auth.signInWithOAuth({
@@ -122,5 +122,5 @@ export const create_Auth_Controller = create_Controller((deps: Deps) => {
       return await res.redirect(data.url);
     }
   }
-  return { callback, googleAuthInit, emailSignIn };
+  return { f_callback, f_google_Auth_Init, f_email_Sign_In };
 })

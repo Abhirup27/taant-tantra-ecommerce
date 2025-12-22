@@ -33,7 +33,7 @@ async function f_initValkeyClient() {
   return client;
 }
 
-function f_initDB() {
+async function f_initDB() {
   return shared.AppDataSource.initialize()
     .then((dataSource): DataSource => {
       console.log("Data Source has been initialized");
@@ -53,18 +53,18 @@ async function f_bootstrap(): Promise<Express> {
   const db_connection = await f_initDB();
   const valkey_client = await f_initValkeyClient();
 
-  const services = await create_App_Services(db_connection, valkey_client);
+  const services = create_App_Services(db_connection, valkey_client);
 
   //SET THIS WHEN ABOUT TO DEPLOY
   app.use(cors({
-    origin: "http://www.localhost:3002",
-    methods: ["POST", "OPTIONS"],
+    origin: "http://localhost:3002",
+    methods: ["POST", "GET", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
     credentials: true
   }))
 
   //ROUTES MUST COME AFTER CORS AND CSRF MIDDLEWARE;
-  const routes = create_Routes(services).router;
+  const routes = create_Routes(services);
   app.use(routes);
 
   return app;

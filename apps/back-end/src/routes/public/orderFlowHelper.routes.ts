@@ -1,8 +1,8 @@
 import express from "express";
-import { ServiceabilityQuerySchema, type OrderController } from "../../controllers/order.controller.js";
 import { parse_Request_Query } from "../../middlewares/parseQuery.middleware.js";
+import { ServiceabilityQuerySchema, type ShipmentController } from "../../controllers/shipment.controller.js";
 
-export function create_Order_Flow_Helper_Routes(controller: OrderController) {
+export function create_Order_Flow_Helper_Routes(controller: ShipmentController) {
 
   const router = express.Router();
 

@@ -20,15 +20,15 @@ export function create_App_Services(dataSource: DataSource, valkeyClient: GlideC
 
   const user_service = create_User_Service(user_repo);
   const auth_service = create_Auth_Service(user_repo);
-  const suppliers_service = create_Shiprocket_Service(valkeyClient, suppliers_repo);
+  const shipment_service = create_Shiprocket_Service(valkeyClient, suppliers_repo);
 
-  create_Cron_Service(valkeyClient, suppliers_service);
+  create_Cron_Service(valkeyClient, shipment_service);
   //run auth with shiprocket at startup
 
 
   return {
     user_service: user_service,
     auth_service: auth_service,
-    suppliers_service: suppliers_service,
+    shipment_service: shipment_service,
   };
 }
